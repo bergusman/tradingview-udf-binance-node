@@ -1,4 +1,4 @@
-# Binance UDF Data Source
+# TradingView Charting Library UDF Data Source
 
 Sample implementation of server-side UDF-compatible data source for [Binance exchange](https://www.binance.com/) for [TradingView](https://www.tradingview.com/) [charting library](https://www.tradingview.com/HTML5-stock-forex-bitcoin-charting-library/).
 
