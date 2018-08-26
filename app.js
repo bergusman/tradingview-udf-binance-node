@@ -126,13 +126,6 @@ app.get('/config', (req, res) => {
         supports_marks: false,
         supports_timescale_marks: false,
         supports_time: true,
-        supported_resolutions: [
-            '1', '3', '5', '15', '30',                  // Minutes
-            '60', '120', '240', '360', '480', '720',    // Hours
-            '1D', '3D',                                 // Days
-            '1W',                                       // Weeks
-            '1M'                                        // Months
-        ],
         exchanges: [
             {
                 value: 'BINANCE',
@@ -140,7 +133,14 @@ app.get('/config', (req, res) => {
                 desc: ''
             }
         ],
-        symbols_types: symbolsTypes
+        symbols_types: symbolsTypes,
+        supported_resolutions: [
+            '1', '3', '5', '15', '30',                  // Minutes
+            '60', '120', '240', '360', '480', '720',    // Hours
+            '1D', '3D',                                 // Days
+            '1W',                                       // Weeks
+            '1M'                                        // Months
+        ]
     })
 })
 
