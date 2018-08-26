@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 const morgan = require('morgan')
-app.use(morgan('dev'))
+app.use(morgan('tiny'))
 
 const cors = require('cors')
 app.use(cors())
@@ -193,14 +193,14 @@ app.get('/history', (req, res) => {
         return res.status(400).send({s: 'error', errmsg: 'Unsupported resolution'})
     }
 
-    console.log('------------------------------')
-    console.log('From:', new Date(from).toUTCString())
-    console.log('To:  ', new Date(to).toUTCString())
+    //console.log('------------------------------')
+    //console.log('From:', new Date(from).toUTCString())
+    //console.log('To:  ', new Date(to).toUTCString())
 
     let totalKlines = []
 
     function finishKlines() {
-        console.log('Total:', totalKlines.length)
+        //console.log('Total:', totalKlines.length)
         if (totalKlines.length == 0) {
             res.send({
                 s: 'no_data'
@@ -213,7 +213,7 @@ app.get('/history', (req, res) => {
     function getKlines(from, to) {
         binance.klines(req.query.symbol, interval, from, to, 500).then(klines => {
             totalKlines = totalKlines.concat(klines)
-            console.log(klines.length)
+            //console.log(klines.length)
     
             if (klines.length == 500) {
                 from = klines[klines.length - 1][0] + 1
@@ -242,7 +242,7 @@ app.get('/time', (req, res) => {
 function listen() {
     const port = process.env.PORT || 8888
     app.listen(port, () => {
-        console.log(`Listening on port ${port}`)
+        console.log(`Listening on port ${port}\n`)
     })
 }
 
