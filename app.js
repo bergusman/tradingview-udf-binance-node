@@ -39,29 +39,6 @@ const RESOLUTIONS_INTERVALS_MAP = {
     '1M': '1M',
 }
 
-function secondsFromResolution(res) {
-    return {
-        '1': 1 * 60,
-        '3': 3 * 60,
-        '5': 5 * 60,
-        '15': 15 * 60,
-        '30': 30 * 60,
-        '60': 60 * 60,
-        '120': 120 * 60,
-        '240': 240 * 60,
-        '360': 360 * 60,
-        '480': 480 * 60,
-        '720': 720 * 60,
-        'D': 1 * 24 * 60 * 60,
-        '1D': 1 * 24 * 60 * 60,
-        '3D': 3 * 24 * 60 * 60,
-        'W': 7 * 24 * 60 * 60,
-        '1W': 7 * 24 * 60 * 60,
-        'M': 30 * 24 * 60 * 60,
-        '1M': 30 * 24 * 60 * 60,
-    }[res]
-}
-
 function convertSymbolToSearch(symbol) {
     return {
         symbol: symbol.symbol,
@@ -93,6 +70,7 @@ function convertSymbolToResolve(symbol) {
         listed_exchange: 'BINANCE',
         timezone: 'Etc/UTC',
         has_intraday: true,
+        has_daily: true,
         has_weekly_and_monthly: true,
         pricescale: pricescale(symbol),
         minmovement: 1,
@@ -102,7 +80,7 @@ function convertSymbolToResolve(symbol) {
     }
 }
 
-function convertKLinesToBars(klines) {
+function convertKlinesToBars(klines) {
     return {
         s: 'ok',
         t: klines.map(b => Math.floor(b[0] / 1000)),
@@ -190,14 +168,14 @@ app.get('/search', (req, res) => {
 
 app.get('/history', (req, res) => {
     let from = req.query.from
+    if (!from) {
+        return res.status(400).send({s: 'error', errmsg: 'Need from in query'})
+    }
+
     let to = req.query.to
-
-    inter = secondsFromResolution(req.query.resolution)
-
-    const count = (to - from) / inter
-    console.log('From:', from)
-    console.log('To:', to)
-    console.log('Count:', count)
+    if (!to) {
+        return res.status(400).send({s: 'error', errmsg: 'Need to in query'})
+    }
 
     from *= 1000
     to *= 1000
@@ -215,12 +193,41 @@ app.get('/history', (req, res) => {
         return res.status(400).send({s: 'error', errmsg: 'Unsupported resolution'})
     }
 
-    binance.klines(req.query.symbol, interval, from, to, 1000).then(klines => {
-        res.send(convertKLinesToBars(klines))
-    }).catch(err => {
-        console.error(err)
-        res.status(500).send()
-    })
+    console.log('------------------------------')
+    console.log('From:', new Date(from).toUTCString())
+    console.log('To:  ', new Date(to).toUTCString())
+
+    let totalKlines = []
+
+    function finishKlines() {
+        console.log('Total:', totalKlines.length)
+        if (totalKlines.length == 0) {
+            res.send({
+                s: 'no_data'
+            })
+        } else {
+            res.send(convertKlinesToBars(totalKlines))
+        }
+    }
+
+    function getKlines(from, to) {
+        binance.klines(req.query.symbol, interval, from, to, 500).then(klines => {
+            totalKlines = totalKlines.concat(klines)
+            console.log(klines.length)
+    
+            if (klines.length == 500) {
+                from = klines[klines.length - 1][0] + 1
+                getKlines(from, to)
+            } else {
+                finishKlines()
+            }        
+        }).catch(err => {
+            console.error(err)
+            res.status(500).send({s: 'error', errmsg: 'Internal error'})
+        })
+    }
+
+    getKlines(from, to)
 })
 
 app.get('/time', (req, res) => {
