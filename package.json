@@ -1,7 +1,7 @@
 {
-  "name": "binance-udf-node",
+  "name": "tradingview-udf-binance-node",
   "version": "0.1.0",
-  "description": "Sample implementation of server-side UDF-compatible data source for Binance exchange",
+  "description": "Sample implementation of TradingView Charting Library UDF-compatible data source for Binance exchange",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bergusman/binance-udf-node.git"
+    "url": "git+https://github.com/bergusman/tradingview-udf-binance-node.git"
   },
   "author": "Vitaly Berg <bergusman@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bergusman/binance-udf-node/issues"
+    "url": "https://github.com/bergusman/tradingview-udf-binance-node/issues"
   },
-  "homepage": "https://github.com/bergusman/binance-udf-node#readme",
+  "homepage": "https://github.com/bergusman/tradingview-udf-binance-node#readme",
   "keywords": [
     "udf",
     "tradingview",
