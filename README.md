@@ -9,6 +9,13 @@ $ npm install
 $ npm start
 ```
 
+### Docker
+
+```
+$ docker build . -t udf
+$ docker run -p 8080:80 udf
+```
+
 ## Links
 
 * [Binance REST API](https://github.com/binance-exchange/binance-official-api-docs)
