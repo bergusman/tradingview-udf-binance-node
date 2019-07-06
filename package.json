@@ -1,11 +1,11 @@
 {
   "name": "tradingview-udf-binance-node",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Sample implementation of TradingView Charting Library UDF-compatible data source for Binance exchange",
-  "main": "app.js",
+  "main": "./src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node ./src/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,17 +18,18 @@
   },
   "homepage": "https://github.com/bergusman/tradingview-udf-binance-node#readme",
   "keywords": [
-    "udf",
+    "ohlcv",
     "tradingview",
+    "udf",
     "crypto",
-    "binance",
     "exchange",
+    "binance",
     "api"
   ],
   "dependencies": {
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "morgan": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
     "request": "^2.88.0"
   }
 }
