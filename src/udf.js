@@ -24,7 +24,10 @@ class UDF {
         }
 
         const promise = this.binance.exchangeInfo().catch(err => {
-            this.loadSymbols
+            console.error(err)
+            setTimeout(() => {
+                this.loadSymbols()
+            }, 1000)
         })
         this.symbols = promise.then(info => {
             return info.symbols.map(symbol => {
